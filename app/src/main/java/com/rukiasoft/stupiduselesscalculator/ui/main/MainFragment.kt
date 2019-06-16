@@ -33,6 +33,7 @@ class MainFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 
         binding.btnNumber1.setOnClickListener {
+            binding.txtResult.text = null
             val text = "${binding.edtInput.text}1"
             binding.edtInput.text = text
             binding.btnNumber1.isEnabled = false
@@ -72,13 +73,20 @@ class MainFragment : BaseFragment() {
             binding.btnNumber1.isEnabled = false
             binding.btnNumber0.isEnabled = false
             binding.btnResult.isEnabled = false
-            when(viewModel.getButtonToActivate(newText)){
+            when (viewModel.getButtonToActivate(newText)) {
                 MainViewModel.ActiveButton.UNO -> binding.btnNumber1.isEnabled = true
                 MainViewModel.ActiveButton.MULTIPLY -> binding.btnNumberMul.isEnabled = true
                 MainViewModel.ActiveButton.ZERO -> binding.btnNumber0.isEnabled = true
             }
         }
 
+        binding.btnResult.setOnClickListener {
+            val result = viewModel.performOperation(binding.edtInput.text.toString())
+            binding.txtResult.text = result?.toString()
+            binding.btnResult.isEnabled = false
+            binding.btnNumber1.isEnabled = true
+            binding.edtInput.text = null
+        }
 
     }
 

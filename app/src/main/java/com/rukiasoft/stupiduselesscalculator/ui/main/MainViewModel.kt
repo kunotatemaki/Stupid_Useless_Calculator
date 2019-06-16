@@ -1,6 +1,7 @@
 package com.rukiasoft.stupiduselesscalculator.ui.main
 
 import androidx.lifecycle.ViewModel
+import java.lang.NumberFormatException
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor() : ViewModel() {
@@ -27,19 +28,21 @@ class MainViewModel @Inject constructor() : ViewModel() {
         UNO, MULTIPLY, ZERO
     }
 
-    var first: Double? = null
-    var second: Double? = null
-    var operation: Operator? = null
-
-    fun performOperation(): Double? {
-        operation?.let {
-            val fOp = first ?: return null
-            val sOp = second ?: return null
-            when (it) {
-                Operator.ADD -> fOp.plus(sOp)
-                Operator.MINUS -> fOp.minus(sOp)
-                Operator.MULTIPLY -> fOp.times(sOp)
-                Operator.DIVIDER -> fOp.div(sOp)
+    fun performOperation(text: String): Double? {
+        Operator.getOperationFromChar(text[1])?.let { operator->
+            try {
+                val parts = text.split(operator.op)
+                if (parts.size < 2) return null
+                val fOp = parts[0].toDouble()
+                val sOp = parts[1].toDouble()
+                return when (operator) {
+                    Operator.ADD -> fOp.plus(sOp)
+                    Operator.MINUS -> fOp.minus(sOp)
+                    Operator.MULTIPLY -> fOp.times(sOp)
+                    Operator.DIVIDER -> fOp.div(sOp)
+                }
+            }catch (e: NumberFormatException){
+                return null
             }
         }
         return null

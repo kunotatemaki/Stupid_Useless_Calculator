@@ -7,4 +7,5 @@
     <color name="colorOperators">#FB8C00</color>
     <color name="colorNumbers">#2962FF</color>
     <color name="colorDel">#D50000</color>
+    <color name="colorScreen">#62c858</color>
 </resources>
