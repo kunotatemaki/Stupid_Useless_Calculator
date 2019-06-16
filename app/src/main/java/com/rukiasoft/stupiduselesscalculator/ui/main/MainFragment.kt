@@ -13,6 +13,8 @@ import com.rukiasoft.stupiduselesscalculator.ui.common.BaseFragment
 class MainFragment : BaseFragment() {
 
     companion object {
+        private val SCREEN_TEXT_INPUT: String = "screen_text_input"
+        private val SCREEN_TEXT_RESULT: String = "screen_text_result"
         fun newInstance() = MainFragment()
     }
 
@@ -28,9 +30,31 @@ class MainFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        binding.txtResult.text?.let {
+            outState.putString(SCREEN_TEXT_RESULT, it.toString())
+        }
+        binding.edtInput?.let {
+            outState.putString(SCREEN_TEXT_INPUT, it.toString())
+        }
+
+        super.onSaveInstanceState(outState)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+
+        savedInstanceState?.let {
+            if (it.containsKey(SCREEN_TEXT_INPUT)) {
+                val input = it.getString(SCREEN_TEXT_INPUT)
+                binding.edtInput.text = input
+                activateRightButton(input)
+            }
+            if (it.containsKey(SCREEN_TEXT_RESULT)) {
+                binding.txtResult.text = it.getString(SCREEN_TEXT_RESULT)
+            }
+        }
 
         binding.btnNumber1.setOnClickListener {
             binding.txtResult.text = null
@@ -69,15 +93,7 @@ class MainFragment : BaseFragment() {
             val text = binding.edtInput.text.toString()
             val newText = viewModel.removeLastCharacter(text)
             binding.edtInput.text = newText
-            binding.btnNumberMul.isEnabled = false
-            binding.btnNumber1.isEnabled = false
-            binding.btnNumber0.isEnabled = false
-            binding.btnResult.isEnabled = false
-            when (viewModel.getButtonToActivate(newText)) {
-                MainViewModel.ActiveButton.UNO -> binding.btnNumber1.isEnabled = true
-                MainViewModel.ActiveButton.MULTIPLY -> binding.btnNumberMul.isEnabled = true
-                MainViewModel.ActiveButton.ZERO -> binding.btnNumber0.isEnabled = true
-            }
+            activateRightButton(newText)
         }
 
         binding.btnResult.setOnClickListener {
@@ -88,6 +104,19 @@ class MainFragment : BaseFragment() {
             binding.edtInput.text = null
         }
 
+    }
+
+    fun activateRightButton(text: String) {
+
+        binding.btnNumberMul.isEnabled = false
+        binding.btnNumber1.isEnabled = false
+        binding.btnNumber0.isEnabled = false
+        binding.btnResult.isEnabled = false
+        when (viewModel.getButtonToActivate(text)) {
+            MainViewModel.ActiveButton.UNO -> binding.btnNumber1.isEnabled = true
+            MainViewModel.ActiveButton.MULTIPLY -> binding.btnNumberMul.isEnabled = true
+            MainViewModel.ActiveButton.ZERO -> binding.btnNumber0.isEnabled = true
+        }
     }
 
 }
