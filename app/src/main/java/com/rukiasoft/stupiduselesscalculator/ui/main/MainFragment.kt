@@ -34,7 +34,7 @@ class MainFragment : BaseFragment() {
         binding.txtResult.text?.let {
             outState.putString(SCREEN_TEXT_RESULT, it.toString())
         }
-        binding.edtInput?.let {
+        binding.edtInput.text?.let {
             outState.putString(SCREEN_TEXT_INPUT, it.toString())
         }
 
