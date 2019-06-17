@@ -13,9 +13,8 @@ import com.rukiasoft.stupiduselesscalculator.ui.common.BaseFragment
 class MainFragment : BaseFragment() {
 
     companion object {
-        private val SCREEN_TEXT_INPUT: String = "screen_text_input"
-        private val SCREEN_TEXT_RESULT: String = "screen_text_result"
-        fun newInstance() = MainFragment()
+        private const val SCREEN_TEXT_INPUT: String = "screen_text_input"
+        private const val SCREEN_TEXT_RESULT: String = "screen_text_result"
     }
 
     private lateinit var binding: MainFragmentBinding
@@ -47,7 +46,7 @@ class MainFragment : BaseFragment() {
 
         savedInstanceState?.let {
             if (it.containsKey(SCREEN_TEXT_INPUT)) {
-                val input = it.getString(SCREEN_TEXT_INPUT)
+                val input = it.getString(SCREEN_TEXT_INPUT) ?: ""
                 binding.edtInput.text = input
                 activateRightButton(input)
             }
@@ -97,7 +96,7 @@ class MainFragment : BaseFragment() {
         }
 
         binding.btnResult.setOnClickListener {
-            val result = viewModel.performOperation(binding.edtInput.text.toString())
+            val result = viewModel.performOperation(binding.edtInput.text.toString())?.toInt()
             binding.txtResult.text = result?.toString()
             binding.btnResult.isEnabled = false
             binding.btnNumber1.isEnabled = true

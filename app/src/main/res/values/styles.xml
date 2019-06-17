@@ -1,15 +1,13 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!--    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="CalculatorButtonBig" parent="Widget.MaterialComponents.Button">
-        <!--    <style name="CalculatorButton" parent="TextAppearance.AppCompat.Button">-->
         <item name="android:layout_marginStart">2dp</item>
         <item name="android:layout_marginEnd">2dp</item>
         <item name="android:enabled">false</item>
@@ -19,7 +17,6 @@
         <item name="backgroundTint">@color/colorNumbers</item>
     </style>
     <style name="CalculatorButtonIcon" parent="Widget.MaterialComponents.Button.Icon">
-        <!--    <style name="CalculatorButton" parent="TextAppearance.AppCompat.Button">-->
         <item name="android:layout_marginStart">2dp</item>
         <item name="android:layout_marginEnd">2dp</item>
         <item name="android:enabled">false</item>
