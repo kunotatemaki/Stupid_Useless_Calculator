@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import com.rukiasoft.stupiduselesscalculator.MainActivity
 import com.rukiasoft.stupiduselesscalculator.R
 import com.rukiasoft.stupiduselesscalculator.databinding.MainFragmentBinding
 import com.rukiasoft.stupiduselesscalculator.ui.common.BaseFragment
@@ -101,6 +102,7 @@ class MainFragment : BaseFragment() {
             binding.btnResult.isEnabled = false
             binding.btnNumber1.isEnabled = true
             binding.edtInput.text = null
+            (activity as? MainActivity)?.loadAd()
         }
 
     }
