@@ -102,7 +102,10 @@ class MainFragment : BaseFragment() {
             binding.btnResult.isEnabled = false
             binding.btnNumber1.isEnabled = true
             binding.edtInput.text = null
-            (activity as? MainActivity)?.loadAd()
+            if(viewModel.needToShowInterstitial()) {
+                (activity as? MainActivity)?.loadAd()
+            }
+            viewModel.interstitialShown()
         }
 
     }

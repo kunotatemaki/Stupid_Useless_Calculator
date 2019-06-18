@@ -1,10 +1,11 @@
 package com.rukiasoft.stupiduselesscalculator.ui.main
 
 import androidx.lifecycle.ViewModel
-import java.lang.NumberFormatException
+import com.rukiasoft.androidapps.cocinaconroll.preferences.PreferencesConstants
+import com.rukiasoft.androidapps.cocinaconroll.preferences.PreferencesManager
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor() : ViewModel() {
+class MainViewModel @Inject constructor(private val preferencesManager: PreferencesManager) : ViewModel() {
     enum class Operator(val op: Char) {
         ADD('+'),
         MINUS('-'),
@@ -29,7 +30,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
     }
 
     fun performOperation(text: String): Double? {
-        Operator.getOperationFromChar(text[1])?.let { operator->
+        Operator.getOperationFromChar(text[1])?.let { operator ->
             try {
                 val parts = text.split(operator.op)
                 if (parts.size < 2) return null
@@ -41,7 +42,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
                     Operator.MULTIPLY -> fOp.times(sOp)
                     Operator.DIVIDER -> fOp.div(sOp)
                 }
-            }catch (e: NumberFormatException){
+            } catch (e: NumberFormatException) {
                 return null
             }
         }
@@ -82,11 +83,27 @@ class MainViewModel @Inject constructor() : ViewModel() {
         if (text.isBlank()) return ActiveButton.UNO
         val char = text.getOrNull(text.lastIndex)
         return if (char == '0') ActiveButton.ZERO
-        else if(char == '1' && text.length == 1) ActiveButton.MULTIPLY
-        else if(char == '1') ActiveButton.ZERO
+        else if (char == '1' && text.length == 1) ActiveButton.MULTIPLY
+        else if (char == '1') ActiveButton.ZERO
         else if (Operator.getOperationFromChar(char) != null) ActiveButton.UNO
         else ActiveButton.UNO
     }
+
+    fun needToShowInterstitial(): Boolean =
+        preferencesManager.getIntFromPreferences(PreferencesConstants.PREFERENCE_INTERSTITIAL) ==
+                PreferencesConstants.PREFERENCE_INTERSTITIAL_NUMBER
+
+    fun interstitialShown() {
+        val stored = preferencesManager.getIntFromPreferences(PreferencesConstants.PREFERENCE_INTERSTITIAL)
+        val toStore = stored + 1
+
+        preferencesManager.setIntIntoPreferences(
+            key = PreferencesConstants.PREFERENCE_INTERSTITIAL,
+            value = if (toStore > PreferencesConstants.PREFERENCE_INTERSTITIAL_NUMBER) 0 else toStore
+        )
+
+    }
+
 }
 
 
